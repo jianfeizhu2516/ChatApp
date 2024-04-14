@@ -27,7 +27,7 @@ const AddUser = () => {
       // Create a query against the collection.
       const q = query(userRef, where("username", "==", username));
 
-      const querySnapShot = await getDocs(q);
+      const querySnapShot = await getDocs (q);
 
       if (!querySnapShot.empty) {
         setUser(querySnapShot.docs[0].data())
