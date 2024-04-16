@@ -5,10 +5,12 @@ import List from "./components/list/List"
 import Login from "./components/login/Login"
 import Notification from "./components/notification/Notification";
 import {useUserStore} from "./lib/userStore";
+import { useChatStore } from "./lib/chatStore"
 import { useEffect } from "react";
 import {auth} from "./lib/firebase"
 const App = () => {
   const {currentUser,isLoading,fetchUserInfo} = useUserStore();
+  const { chatId } = useChatStore();
   //listen to authentication
   useEffect(()=>{
     const unSub = onAuthStateChanged(auth,(user)=>{
@@ -28,8 +30,8 @@ const App = () => {
         currentUser ?
           <>
           <List />
-          <Chat />
-          <Detail/>
+          {chatId&&<Chat />}
+          {chatId&&<Detail/>}
           </>
           :
           <Login />

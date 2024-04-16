@@ -4,7 +4,7 @@ import {
   collection,
   doc,
   getDocs,
-  
+
   query,
   serverTimestamp,
   setDoc,
@@ -37,14 +37,15 @@ const AddUser = () => {
     }
   }
 
-  const handleAddChat = async () => {
+  const handleAddUser = async () => {
     //fetch data
     const chatRef = collection(db, "chats");
     const userChatsRef = collection(db, "userchats")
     try {
+      //when you add a new user, you add a new chat at the same time
+      // the new chat will be added to table (collection) userchats 
       const newChatRef = doc(chatRef)
-      console.log('newChatRef is', newChatRef)
-      // automatically generated new one so that you can update userChat
+
       //add data
       await setDoc(newChatRef, {
         // the time for the message creation time is the server time stamp
@@ -55,20 +56,20 @@ const AddUser = () => {
       await updateDoc(doc(userChatsRef, user.id), {
         chats: arrayUnion({
           chatId: newChatRef.id,
-          lastMessage: '',
+          lastMessage: "",
           receiverId: currentUser.id,
           updatedAt: Date.now(),
-        })
-      })
+        }),
+      });
 
       await updateDoc(doc(userChatsRef, currentUser.id), {
         chats: arrayUnion({
           chatId: newChatRef.id,
-          lastMessage: '',
+          lastMessage: "",
           receiverId: user.id,
           updatedAt: Date.now(),
-        })
-      })
+        }),
+      });
     } catch (err) {
       console.log(err)
     }
@@ -84,7 +85,7 @@ const AddUser = () => {
           <img src={user.avatar || "./avatar.png"} alt="" />
           <span>{user.username}</span>
         </div>
-        <button onClick={handleAddChat}>Add User</button>
+        <button onClick={handleAddUser}>Add User</button>
       </div>}
     </div>
   )
